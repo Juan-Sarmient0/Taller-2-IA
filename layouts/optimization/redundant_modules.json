@@ -1,0 +1,20 @@
+{
+  "name": "redundant_modules",
+  "grid": [
+    "%%%%%%%%%%%%%%%",
+    "%NNN...C...NNN%",
+    "%.............%",
+    "%..C..N.N.....%",
+    "%.%%%.....%%%.%",
+    "%....N..C.N...%",
+    "%C...NN....C..%",
+    "%.............%",
+    "%%%%%%%%%%%%%%%"
+  ],
+  "modules": 5,
+  "coverage_radius": 6,
+  "redundancy_distance": 3,
+  "redundancy_penalty": 9,
+  "critical_weights": [8, 6, 7, 9, 8],
+  "candidate_risks": [0, 1, 0, 1, 0, 1, 2, 2, 1, 1, 0, 1]
+}

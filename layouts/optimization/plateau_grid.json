@@ -1,0 +1,20 @@
+{
+  "name": "plateau_grid",
+  "grid": [
+    "%%%%%%%%%",
+    "%N.C.N.C%",
+    "%.......%",
+    "%N.....N%",
+    "%..C.C..%",
+    "%N.....N%",
+    "%.......%",
+    "%C.N.C.N%",
+    "%%%%%%%%%"
+  ],
+  "modules": 3,
+  "coverage_radius": 4,
+  "redundancy_distance": 2,
+  "redundancy_penalty": 4,
+  "critical_weights": [6, 7, 6, 6, 5, 6],
+  "candidate_risks": [1, 3, 0, 0, 1, 0, 1, 0]
+}

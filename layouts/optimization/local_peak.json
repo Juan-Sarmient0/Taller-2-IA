@@ -1,0 +1,20 @@
+{
+  "name": "local_peak",
+  "grid": [
+    "%%%%%%%%%%%",
+    "%N..C..N..%",
+    "%...%%%...%",
+    "%N..C..N..%",
+    "%.........%",
+    "%..N...C.N%",
+    "%...%%%...%",
+    "%C..N..N..%",
+    "%%%%%%%%%%%"
+  ],
+  "modules": 3,
+  "coverage_radius": 5,
+  "redundancy_distance": 3,
+  "redundancy_penalty": 4,
+  "critical_weights": [8, 5, 9, 7],
+  "candidate_risks": [0, 5, 2, 0, 6, 1, 0, 3]
+}

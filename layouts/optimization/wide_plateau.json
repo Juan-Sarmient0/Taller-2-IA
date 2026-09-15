@@ -1,0 +1,20 @@
+{
+  "name": "wide_plateau",
+  "grid": [
+    "%%%%%%%%%%%%%%%",
+    "%N.C.N...N.C.N%",
+    "%.............%",
+    "%C.N...N...N.C%",
+    "%.%%%.....%%%.%",
+    "%N...C.N.C...N%",
+    "%C.N...N...N.C%",
+    "%.............%",
+    "%%%%%%%%%%%%%%%"
+  ],
+  "modules": 4,
+  "coverage_radius": 4,
+  "redundancy_distance": 2,
+  "redundancy_penalty": 4,
+  "critical_weights": [7, 7, 7, 7, 7, 7, 7, 7],
+  "candidate_risks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}

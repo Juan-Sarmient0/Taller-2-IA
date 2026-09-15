@@ -1,0 +1,20 @@
+{
+  "name": "exposure_tradeoff",
+  "grid": [
+    "%%%%%%%%%%%%%%%%%",
+    "%N.C.N.N...C.NN.%",
+    "%....%%%........%",
+    "%N..N...C..N..N.%",
+    "%.%%%..N...%%%..%",
+    "%C.N...N.N....C.%",
+    "%...N.%%%%..N...%",
+    "%N...C.N....N..C%",
+    "%%%%%%%%%%%%%%%%%"
+  ],
+  "modules": 6,
+  "coverage_radius": 5,
+  "redundancy_distance": 2,
+  "redundancy_penalty": 6,
+  "critical_weights": [13, 11, 10, 12, 9, 12, 10],
+  "candidate_risks": [1, 14, 12, 10, 2, 0, 4, 1, 8, 3, 0, 5, 1, 9, 0, 2, 6, 1]
+}

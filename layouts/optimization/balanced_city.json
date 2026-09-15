@@ -1,0 +1,20 @@
+{
+  "name": "balanced_city",
+  "grid": [
+    "%%%%%%%%%%%%%%%",
+    "%N..C.N.N...C.%",
+    "%...%%%...%%..%",
+    "%N..N...C.N..N%",
+    "%.%%..N..%%...%",
+    "%C.N....N....C%",
+    "%...%%%..N.N..%",
+    "%N..N.C..N..N.%",
+    "%%%%%%%%%%%%%%%"
+  ],
+  "modules": 6,
+  "coverage_radius": 7,
+  "redundancy_distance": 3,
+  "redundancy_penalty": 6,
+  "critical_weights": [10, 8, 7, 9, 11, 8],
+  "candidate_risks": [1, 7, 3, 2, 5, 0, 4, 8, 1, 6, 2, 5, 0, 7, 3, 1]
+}
