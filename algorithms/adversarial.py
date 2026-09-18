@@ -49,7 +49,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
         for accion in state.get_legal_actions(0):
             successor = state.generate_successor(0, accion)
-            valor = self.minimax(successor,1 % state.get_num_agents(),1)
+            valor = self.max_value(successor, 1)
 
             if valor > utilidad:
                 mejor_accion = accion
@@ -57,43 +57,42 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
         return mejor_accion
       
-    def minimax(self, state: GameState, agent_index: int, depth: int):
+    def max_value(self, state: GameState, depth: int):
         
-        self.states_processed +=1
+        self.nodes_evaluated += 1
+
         if state.is_win() or state.is_lose() or depth == self.depth:
-          return self.evaluation_function(state)
-        
-        acciones = state.get_legal_actions(agent_index)
-        
-        if agent_index == 0:
-          best_value = float("-inf")
-          
-          for accion in acciones:
-            sucesor = state.generate_successor(agent_index,accion)
-            next_agent = (agent_index + 1) % state.get_num_agents()
-            
-            value = self.minimax(sucesor,next_agent,depth)
+            return evaluation_function(state)
+
+        best_value = float("-inf")
+
+        for accion in state.get_legal_actions(0):
+            sucesor = state.generate_successor(0, accion)
+
+            value = self.min_value(sucesor, depth)
 
             best_value = max(best_value, value)
-            
-          return best_value
-            
-        else:
-          best_value = float("inf")
-                  
-          for accion in acciones:
-            sucesor = state.generate_successor(agent_index,accion)
-            next_agent = (agent_index + 1) % state.get_num_agents()
-                    
-            if next_agent == 0:
-              value = self.minimax(sucesor,next_agent,depth + 1)
-            else:
-              value = self.minimax(sucesor,next_agent,depth )
-        
+
+        return best_value
+
+
+    def min_value(self, state: GameState, depth: int):
+
+        self.nodes_evaluated += 1
+
+        if state.is_win() or state.is_lose() or depth == self.depth:
+            return evaluation_function(state)
+
+        best_value = float("inf")
+
+        for accion in state.get_legal_actions(1):
+            sucesor = state.generate_successor(1, accion)
+
+            value = self.max_value(sucesor, depth + 1)
+
             best_value = min(best_value, value)
-            
-          return best_value
-        
+
+        return best_value
         
 
 
