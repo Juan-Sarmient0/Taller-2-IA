@@ -41,7 +41,59 @@ class MinimaxAgent(MultiAgentSearchAgent):
           la raíz. Retorne la acción de MAX y conserve la primera en los empates.
         """
         # TODO: Add your code here
-        raise NotImplementedError("Punto 4: implemente MinimaxAgent.get_action")
+        
+        self.nodes_evaluated = 1
+
+        mejor_accion = None
+        utilidad = float("-inf")
+
+        for accion in state.get_legal_actions(0):
+            successor = state.generate_successor(0, accion)
+            valor = self.max_value(successor, 1)
+
+            if valor > utilidad:
+                mejor_accion = accion
+                utilidad = valor
+
+        return mejor_accion
+      
+    def max_value(self, state: GameState, depth: int):
+        
+        self.nodes_evaluated += 1
+
+        if state.is_win() or state.is_lose() or depth == self.depth:
+            return evaluation_function(state)
+
+        best_value = float("-inf")
+
+        for accion in state.get_legal_actions(0):
+            sucesor = state.generate_successor(0, accion)
+
+            value = self.min_value(sucesor, depth)
+
+            best_value = max(best_value, value)
+
+        return best_value
+
+
+    def min_value(self, state: GameState, depth: int):
+
+        self.nodes_evaluated += 1
+
+        if state.is_win() or state.is_lose() or depth == self.depth:
+            return evaluation_function(state)
+
+        best_value = float("inf")
+
+        for accion in state.get_legal_actions(1):
+            sucesor = state.generate_successor(1, accion)
+
+            value = self.max_value(sucesor, depth + 1)
+
+            best_value = min(best_value, value)
+
+        return best_value
+        
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
