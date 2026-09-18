@@ -150,9 +150,11 @@ def one_point_crossover(
     if len(parent1) < 2:
         return parent1, parent2
 
-    # TODO: Add your code here
-    raise NotImplementedError("Punto 3: implemente one_point_crossover")
-
+    corte =rng.randint(1, len(parent1)-1)
+    descendiente1 = tuple(parent1[:corte] + tuple(parent2[corte:]) )
+    descendiente2 = tuple(parent2[:corte] + tuple(parent1[corte:]) )
+    return descendiente1, descendiente2
+    
 
 def swap_mutation(
     individual: Configuration, mutation_probability: float, rng: random.Random
@@ -170,10 +172,26 @@ def swap_mutation(
     - Si alguno de los dos grupos está vacío, no hay un intercambio posible.
     - Retorne una tupla nueva; no modifique el individuo recibido.
     """
-    # TODO: Add your code here
-    raise NotImplementedError("Punto 3: implemente swap_mutation")
 
+    if rng.random() >= mutation_probability:
+        return tuple(individual)
 
+    active = [index for index, bit in enumerate(individual) if bit == 1]
+    inactive = [index for index, bit in enumerate(individual) if bit == 0]
+
+    if not active or not inactive:
+        return tuple(individual)
+
+    active_index = rng.choice(active)
+    inactive_index = rng.choice(inactive)
+
+    mutated = list(individual)
+    mutated[active_index], mutated[inactive_index] = (
+        mutated[inactive_index],
+        mutated[active_index],
+    )
+    return tuple(mutated)
+  
 def genetic_algorithm(
     problem: SmartGridOptimizationProblem,
     population_size: int = 40,
@@ -207,5 +225,65 @@ def genetic_algorithm(
     if not 0 <= elite_size <= population_size:
         raise ValueError("elite_size debe estar entre 0 y population_size")
 
-    # TODO: Add your code here
-    raise NotImplementedError("Punto 3: implemente genetic_algorithm")
+
+    rng = rng or random.Random()
+    if population_size < 2:
+        raise ValueError("La población debe tener al menos dos individuos")
+    if generations < 0:
+        raise ValueError("El número de generaciones no puede ser negativo")
+    if not 0.0 <= mutation_probability <= 1.0:
+        raise ValueError("La probabilidad de mutación debe estar entre 0 y 1")
+    if not 0 <= elite_size <= population_size:
+        raise ValueError("elite_size debe estar entre 0 y population_size")
+
+    # Población inicial y su evaluación (cada llamada a configuration_score cuenta)
+    population = problem.initial_population(population_size, rng)
+    scores = [configuration_score(problem, individual) for individual in population]
+    evaluations = len(population)
+
+    # Mejor global de toda la ejecución (no solo de la última generación)
+    best_index = max(range(len(population)), key=lambda i: scores[i])
+    best_configuration = population[best_index]
+    best_score = scores[best_index]
+
+    history = [best_configuration]
+    score_history = [best_score]
+
+    for _ in range(generations):
+        ranked = sorted(range(len(population)), key=lambda i: scores[i], reverse=True)
+        new_population = [population[i] for i in ranked[:elite_size]]
+
+        while len(new_population) < population_size:
+            parent1 = problem.tournament_select(population, scores, rng)
+            parent2 = problem.tournament_select(population, scores, rng)
+
+            child1, child2 = one_point_crossover(parent1, parent2, rng)
+            child1 = problem.repair_configuration(child1, rng)
+            child2 = problem.repair_configuration(child2, rng)
+            child1 = swap_mutation(child1, mutation_probability, rng)
+            child2 = swap_mutation(child2, mutation_probability, rng)
+
+            new_population.append(child1)
+            if len(new_population) < population_size:
+                new_population.append(child2)
+
+        population = new_population
+        scores = [configuration_score(problem, individual) for individual in population]
+        evaluations += len(population)
+
+        generation_best = max(range(len(population)), key=lambda i: scores[i])
+        if scores[generation_best] > best_score:
+            best_configuration = population[generation_best]
+            best_score = scores[generation_best]
+
+        history.append(best_configuration)
+        score_history.append(best_score)
+
+    return OptimizationResult(
+        best_configuration=best_configuration,
+        best_score=best_score,
+        evaluations=evaluations,
+        iterations=generations,
+        history=history,
+        score_history=score_history,
+    )    
