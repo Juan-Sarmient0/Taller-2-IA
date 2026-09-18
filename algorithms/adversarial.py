@@ -49,7 +49,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
         for accion in state.get_legal_actions(0):
             successor = state.generate_successor(0, accion)
-            valor = self.max_value(successor, 1)
+            valor = self.min_value(successor, 1)
 
             if valor > utilidad:
                 mejor_accion = accion
@@ -69,7 +69,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         for accion in state.get_legal_actions(0):
             sucesor = state.generate_successor(0, accion)
 
-            value = self.min_value(sucesor, depth)
+            value = self.min_value(sucesor, depth+1)
 
             best_value = max(best_value, value)
 

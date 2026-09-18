@@ -18,7 +18,7 @@ def base_evaluation_function(state: GameState) -> float:
 
 
 def evaluation_function(state: GameState) -> float:
-    """
+  """
     Evalúa un estado desde la perspectiva del defensor MAX.
 
     Debe conservar las utilidades terminales de la evaluación base y diseñar
@@ -35,8 +35,27 @@ def evaluation_function(state: GameState) -> float:
     - Maneje conjuntos vacíos y distancias infinitas, y mantenga todo estado no
       terminal estrictamente entre -1000 y +1000.
     """
-    if state.is_win() or state.is_lose():
-        return base_evaluation_function(state)
+  if state.is_win() or state.is_lose():
+      return base_evaluation_function(state)
 
-    # TODO: Add your code here
-    return base_evaluation_function(state)
+  score = state.get_score()
+
+  if state.pending_terminals:
+    distancia_terminal = float("inf")
+    for terminal in state.pending_terminals:
+      distancia = state.layout.distance( state.defender_position, terminal )
+      if distancia < distancia_terminal:
+        distancia_terminal = distancia
+  else:
+    distancia_terminal = 0
+  distancia_intruso = state.layout.distance(state.defender_position,state.intruder_position)
+
+  if math.isinf(distancia_terminal):
+      distancia_terminal = 100
+
+  if math.isinf(distancia_intruso):
+      distancia_intruso = 100
+
+  valor = (score- 2.0 * distancia_terminal+ 1.0 * distancia_intruso)
+
+  return max(-999.0, min(999.0, valor))
