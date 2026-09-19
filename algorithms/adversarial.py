@@ -113,5 +113,67 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         - En MAX actualice alpha y corte si valor >= beta; en MIN actualice beta
           y corte si valor <= alpha.
         """
-        # TODO: Add your code here
-        raise NotImplementedError("Punto 5: implemente AlphaBetaAgent.get_action")
+        self.nodes_evaluated = 1
+
+        mejor_accion = None
+        utilidad = float("-inf")
+        alpha = float("-inf")
+        beta = float("inf")
+
+        for accion in state.get_legal_actions(0):
+            sucesor = state.generate_successor(0, accion)
+            valor = self.min_value(sucesor, 1, alpha, beta)
+
+            if valor > utilidad:
+                mejor_accion = accion
+                utilidad = valor
+
+            alpha = max(alpha, utilidad)
+
+        return mejor_accion
+
+    def max_value(self, state: GameState, depth: int, alpha: float, beta: float):
+
+        self.nodes_evaluated += 1
+
+        if state.is_win() or state.is_lose() or depth == self.depth:
+            return evaluation_function(state)
+
+        best_value = float("-inf")
+
+        for accion in state.get_legal_actions(0):
+            sucesor = state.generate_successor(0, accion)
+
+            value = self.min_value(sucesor, depth + 1, alpha, beta)
+
+            best_value = max(best_value, value)
+
+            if best_value >= beta:
+                return best_value
+
+            alpha = max(alpha, best_value)
+
+        return best_value
+
+    def min_value(self, state: GameState, depth: int, alpha: float, beta: float):
+
+        self.nodes_evaluated += 1
+
+        if state.is_win() or state.is_lose() or depth == self.depth:
+            return evaluation_function(state)
+
+        best_value = float("inf")
+
+        for accion in state.get_legal_actions(1):
+            sucesor = state.generate_successor(1, accion)
+
+            value = self.max_value(sucesor, depth + 1, alpha, beta)
+
+            best_value = min(best_value, value)
+
+            if best_value <= alpha:
+                return best_value
+
+            beta = min(beta, best_value)
+
+        return best_value
